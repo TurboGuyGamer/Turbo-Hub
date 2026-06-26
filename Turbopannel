@@ -165,33 +165,32 @@ end)
 -- SYSTEMS & FUNCTIONS
 ----------------------------------------------------------------
 
--- Both Copy & Auto-Open Logic Fixed
+-- Both Copy & Forced Web-Browser Link Logic
 DiscordButton.MouseButton1Click:Connect(function()
-	local discordLink = "https://discord.gg/MB3Sa3XHyX"
+	local discordWebLink = "https://discord.com/invite/MB3Sa3XHyX" -- Full web link to force Chrome
 	
-	-- 1. Pehle background me clipboard par copy karega
+	-- 1. Background me clipboard par copy karega
 	if setclipboard then
-		setclipboard(discordLink)
+		setclipboard(discordWebLink)
 	elseif toclipboard then
-		toclipboard(discordLink)
+		toclipboard(discordWebLink)
 	end
 	
-	-- 2. Saath hi saath browser open karne ki koshish karega
+	-- 2. Chrome/Browser open karega
 	if openurl then
 		pcall(function()
-			openurl(discordLink)
+			openurl(discordWebLink)
 		end)
 		DiscordButton.Text = "Copied & Opening Chrome..."
-		DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105) -- Green Success
+		DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105)
 	else
-		-- Agar executor openurl support nahi karta toh sirf copied dikhaega
 		DiscordButton.Text = "Link Copied to Clipboard!"
 		DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105)
 	end
 	
 	task.wait(2)
 	DiscordButton.Text = "Join Discord Server"
-	DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242) -- Back to Blurple
+	DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
 end)
 
 -- Generate Script Buttons
@@ -251,6 +250,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
 		DiscordButton.Visible = true
 		SearchBar.Visible = true
 		ScrollingFrame.Visible = true
+		DiscordButton.Visible = true
 		MinimizeButton.Text = "-"
 	end
 end)
