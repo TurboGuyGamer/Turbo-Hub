@@ -16,7 +16,7 @@ local UICorner_Search = Instance.new("UICorner")
 local UICorner_Discord = Instance.new("UICorner")
 
 ----------------------------------------------------------------
--- CONFIGURATION SYSTEM (Scripts List)
+-- CONFIGURATION SYSTEM (Changed 'TurboGame' to 'Blox Fruit')
 ----------------------------------------------------------------
 local ScriptsData = {
 	{
@@ -32,11 +32,14 @@ local ScriptsData = {
 		end
 	},
 	{
-		Name = "Blox Fruit",
+		Name = "Blox Fruit", -- Name updated here
 		Function = function()
+			local Settings = {
+				JoinTeam = "Pirates",
+				Translator = true,
+			}
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/newredzv3/Scripts/refs/heads/main/main.luau"))(Settings)
 		end
-	},
 	}
 }
 
@@ -162,19 +165,17 @@ end)
 -- SYSTEMS & FUNCTIONS
 ----------------------------------------------------------------
 
--- Discord Text Updated to "Copied! Paste it in Browser"
+-- Copy & Forced Web-Browser Link Logic
 DiscordButton.MouseButton1Click:Connect(function()
 	local pureLink = "https://discord.com/invite/MB3Sa3XHyX"
 	local googleRedirect = "https://www.google.com/url?q=https://discord.com/invite/MB3Sa3XHyX"
 	
-	-- 1. Clipboard copy
 	if setclipboard then
 		setclipboard(pureLink)
 	elseif toclipboard then
 		toclipboard(pureLink)
 	end
 	
-	-- 2. Open via Google Redirect
 	if openurl then
 		local success, _ = pcall(function()
 			openurl(googleRedirect)
