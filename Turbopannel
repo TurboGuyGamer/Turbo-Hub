@@ -32,14 +32,11 @@ local ScriptsData = {
 		end
 	},
 	{
-		Name = "TurboGame",
+		Name = "Blox Fruit",
 		Function = function()
-			local Settings = {
-				JoinTeam = "Pirates",
-				Translator = true,
-			}
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/newredzv3/Scripts/refs/heads/main/main.luau"))(Settings)
 		end
+	},
 	}
 }
 
@@ -165,30 +162,37 @@ end)
 -- SYSTEMS & FUNCTIONS
 ----------------------------------------------------------------
 
--- Both Copy & Forced Web-Browser Link Logic
+-- Discord Text Updated to "Copied! Paste it in Browser"
 DiscordButton.MouseButton1Click:Connect(function()
-	local discordWebLink = "https://discord.com/invite/MB3Sa3XHyX" -- Full web link to force Chrome
+	local pureLink = "https://discord.com/invite/MB3Sa3XHyX"
+	local googleRedirect = "https://www.google.com/url?q=https://discord.com/invite/MB3Sa3XHyX"
 	
-	-- 1. Background me clipboard par copy karega
+	-- 1. Clipboard copy
 	if setclipboard then
-		setclipboard(discordWebLink)
+		setclipboard(pureLink)
 	elseif toclipboard then
-		toclipboard(discordWebLink)
+		toclipboard(pureLink)
 	end
 	
-	-- 2. Chrome/Browser open karega
+	-- 2. Open via Google Redirect
 	if openurl then
-		pcall(function()
-			openurl(discordWebLink)
+		local success, _ = pcall(function()
+			openurl(googleRedirect)
 		end)
-		DiscordButton.Text = "Copied & Opening Chrome..."
-		DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105)
+		
+		if success then
+			DiscordButton.Text = "Opening in Chrome/Google..."
+			DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105)
+		else
+			DiscordButton.Text = "Copied! Paste it in Browser"
+			DiscordButton.BackgroundColor3 = Color3.fromRGB(219, 144, 43)
+		end
 	else
-		DiscordButton.Text = "Link Copied to Clipboard!"
-		DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105)
+		DiscordButton.Text = "Copied! Paste it in Browser"
+		DiscordButton.BackgroundColor3 = Color3.fromRGB(219, 144, 43)
 	end
 	
-	task.wait(2)
+	task.wait(3)
 	DiscordButton.Text = "Join Discord Server"
 	DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
 end)
@@ -250,7 +254,6 @@ MinimizeButton.MouseButton1Click:Connect(function()
 		DiscordButton.Visible = true
 		SearchBar.Visible = true
 		ScrollingFrame.Visible = true
-		DiscordButton.Visible = true
 		MinimizeButton.Text = "-"
 	end
 end)
