@@ -7,7 +7,7 @@ local CloseButton = Instance.new("TextButton")
 local SearchBar = Instance.new("TextBox")
 local ScrollingFrame = Instance.new("ScrollingFrame")
 local UIListLayout = Instance.new("UIListLayout")
-local DiscordButton = Instance.new("TextButton") -- Discord Button
+local DiscordButton = Instance.new("TextButton")
 
 -- Corners
 local UICorner_Frame = Instance.new("UICorner")
@@ -35,8 +35,8 @@ local ScriptsData = {
 		Name = "TurboGame",
 		Function = function()
 			local Settings = {
-				JoinTeam = "Pirates", -- Pirates/Marines
-				Translator = true, -- true/false
+				JoinTeam = "Pirates",
+				Translator = true,
 			}
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/newredzv3/Scripts/refs/heads/main/main.luau"))(Settings)
 		end
@@ -44,7 +44,7 @@ local ScriptsData = {
 }
 
 ----------------------------------------------------------------
--- UI PROPERTIES & STYLING (Rearranged Layout)
+-- UI PROPERTIES & STYLING
 ----------------------------------------------------------------
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -111,11 +111,11 @@ CloseButton.TextSize = 18.000
 CloseButton.ZIndex = 10
 CloseButton.Active = true
 
--- Discord Button (Shifted ABOVE Search Bar)
+-- Discord Button (Search Bar ke Upar)
 DiscordButton.Parent = Frame
-DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242) -- Discord Blurple
+DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
 DiscordButton.BorderSizePixel = 0
-DiscordButton.Position = UDim2.new(0, 10, 0, 38) -- Just under header
+DiscordButton.Position = UDim2.new(0, 10, 0, 38)
 DiscordButton.Size = UDim2.new(0, 240, 0, 35)
 DiscordButton.Font = Enum.Font.GothamBold
 DiscordButton.Text = "Join Discord Server"
@@ -126,11 +126,11 @@ DiscordButton.ZIndex = 3
 UICorner_Discord.CornerRadius = UDim.new(0, 6)
 UICorner_Discord.Parent = DiscordButton
 
--- Search Bar (Shifted below Discord Button)
+-- Search Bar
 SearchBar.Parent = Frame
 SearchBar.BackgroundColor3 = Color3.fromRGB(24, 15, 48)
 SearchBar.BorderSizePixel = 0
-SearchBar.Position = UDim2.new(0, 10, 0, 78) -- Position adjusted
+SearchBar.Position = UDim2.new(0, 10, 0, 78)
 SearchBar.Size = UDim2.new(0, 240, 0, 30)
 SearchBar.Font = Enum.Font.Gotham
 SearchBar.PlaceholderText = "Search scripts..."
@@ -143,12 +143,12 @@ SearchBar.ZIndex = 3
 UICorner_Search.CornerRadius = UDim.new(0, 6)
 UICorner_Search.Parent = SearchBar
 
--- Scrolling Container (Shifted down to fit everything perfectly)
+-- Scrolling Container
 ScrollingFrame.Parent = Frame
 ScrollingFrame.BackgroundTransparency = 1.000
 ScrollingFrame.BorderSizePixel = 0
-ScrollingFrame.Position = UDim2.new(0, 10, 0, 115) -- Position adjusted
-ScrollingFrame.Size = UDim2.new(0, 240, 0, 200) -- Clean alignment
+ScrollingFrame.Position = UDim2.new(0, 10, 0, 115)
+ScrollingFrame.Size = UDim2.new(0, 240, 0, 200)
 ScrollingFrame.ScrollBarThickness = 4
 ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 255, 255)
 ScrollingFrame.ZIndex = 3
@@ -165,23 +165,34 @@ end)
 -- SYSTEMS & FUNCTIONS
 ----------------------------------------------------------------
 
--- Discord Invite Auto-Copy Logic
+-- Smart Discord Auto-Open / Copy Logic
 DiscordButton.MouseButton1Click:Connect(function()
 	local discordLink = "https://discord.gg/MB3Sa3XHyX"
-	if setclipboard then
-		setclipboard(discordLink)
-	elseif toclipboard then
-		toclipboard(discordLink)
+	
+	-- Agar executor browser open karna support karta hai
+	if openurl then
+		pcall(function()
+			openurl(discordLink)
+		end)
+		DiscordButton.Text = "Opening App/Browser..."
+		DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105) -- Green Success
+	else
+		-- Fallback: Agar openurl kaam nahi kiya toh direct copy ho jayega
+		if setclipboard then
+			setclipboard(discordLink)
+		elseif toclipboard then
+			toclipboard(discordLink)
+		end
+		DiscordButton.Text = "Link Copied to Clipboard!"
+		DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105)
 	end
 	
-	DiscordButton.Text = "Invite Link Copied!"
-	DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105)
 	task.wait(2)
 	DiscordButton.Text = "Join Discord Server"
-	DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+	DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242) -- Back to Blurple
 end)
 
--- Generate Script Buttons with INSTANT AUTO-CLOSE Fix
+-- Generate Script Buttons
 for i, scriptInfo in ipairs(ScriptsData) do
 	local Btn = Instance.new("TextButton")
 	local BtnCorner = Instance.new("UICorner")
@@ -202,11 +213,10 @@ for i, scriptInfo in ipairs(ScriptsData) do
 	BtnCorner.Parent = Btn
 	
 	Btn.MouseButton1Click:Connect(function()
-		-- task.spawn use kiya taaki script background me load ho aur UI turant destroy ho jaye
 		task.spawn(function()
 			pcall(scriptInfo.Function)
 		end)
-		ScreenGui:Destroy() -- Instantly closes the UI panel
+		ScreenGui:Destroy()
 	end)
 end
 
