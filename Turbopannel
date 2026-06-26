@@ -7,7 +7,7 @@ local CloseButton = Instance.new("TextButton")
 local SearchBar = Instance.new("TextBox")
 local ScrollingFrame = Instance.new("ScrollingFrame")
 local UIListLayout = Instance.new("UIListLayout")
-local DiscordButton = Instance.new("TextButton")
+local DiscordButton = Instance.new("TextButton") -- Discord Button
 
 -- Corners
 local UICorner_Frame = Instance.new("UICorner")
@@ -16,7 +16,7 @@ local UICorner_Search = Instance.new("UICorner")
 local UICorner_Discord = Instance.new("UICorner")
 
 ----------------------------------------------------------------
--- CONFIGURATION SYSTEM (Naya Script 'TurboGame' Add Kiya Hai)
+-- CONFIGURATION SYSTEM (Scripts List)
 ----------------------------------------------------------------
 local ScriptsData = {
 	{
@@ -44,7 +44,7 @@ local ScriptsData = {
 }
 
 ----------------------------------------------------------------
--- UI PROPERTIES & STYLING
+-- UI PROPERTIES & STYLING (Rearranged Layout)
 ----------------------------------------------------------------
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -73,7 +73,7 @@ Frame_2.ZIndex = 2
 UICorner_Header.CornerRadius = UDim.new(0, 10)
 UICorner_Header.Parent = Frame_2
 
--- Title Text (With Neon Glow Effect)
+-- Title Text (Neon Glow Effect)
 TextLabel.Parent = Frame_2
 TextLabel.BackgroundTransparency = 1.000
 TextLabel.Position = UDim2.new(0.05, 0, 0, 0)
@@ -111,11 +111,26 @@ CloseButton.TextSize = 18.000
 CloseButton.ZIndex = 10
 CloseButton.Active = true
 
--- Search Bar
+-- Discord Button (Shifted ABOVE Search Bar)
+DiscordButton.Parent = Frame
+DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242) -- Discord Blurple
+DiscordButton.BorderSizePixel = 0
+DiscordButton.Position = UDim2.new(0, 10, 0, 38) -- Just under header
+DiscordButton.Size = UDim2.new(0, 240, 0, 35)
+DiscordButton.Font = Enum.Font.GothamBold
+DiscordButton.Text = "Join Discord Server"
+DiscordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordButton.TextSize = 14.000
+DiscordButton.ZIndex = 3
+
+UICorner_Discord.CornerRadius = UDim.new(0, 6)
+UICorner_Discord.Parent = DiscordButton
+
+-- Search Bar (Shifted below Discord Button)
 SearchBar.Parent = Frame
 SearchBar.BackgroundColor3 = Color3.fromRGB(24, 15, 48)
 SearchBar.BorderSizePixel = 0
-SearchBar.Position = UDim2.new(0, 10, 0, 40)
+SearchBar.Position = UDim2.new(0, 10, 0, 78) -- Position adjusted
 SearchBar.Size = UDim2.new(0, 240, 0, 30)
 SearchBar.Font = Enum.Font.Gotham
 SearchBar.PlaceholderText = "Search scripts..."
@@ -128,12 +143,12 @@ SearchBar.ZIndex = 3
 UICorner_Search.CornerRadius = UDim.new(0, 6)
 UICorner_Search.Parent = SearchBar
 
--- Scrolling Container
+-- Scrolling Container (Shifted down to fit everything perfectly)
 ScrollingFrame.Parent = Frame
 ScrollingFrame.BackgroundTransparency = 1.000
 ScrollingFrame.BorderSizePixel = 0
-ScrollingFrame.Position = UDim2.new(0, 10, 0, 80)
-ScrollingFrame.Size = UDim2.new(0, 240, 0, 190)
+ScrollingFrame.Position = UDim2.new(0, 10, 0, 115) -- Position adjusted
+ScrollingFrame.Size = UDim2.new(0, 240, 0, 200) -- Clean alignment
 ScrollingFrame.ScrollBarThickness = 4
 ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 255, 255)
 ScrollingFrame.ZIndex = 3
@@ -145,21 +160,6 @@ UIListLayout.Padding = UDim.new(0, 6)
 UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 	ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y + 10)
 end)
-
--- Discord Button
-DiscordButton.Parent = Frame
-DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
-DiscordButton.BorderSizePixel = 0
-DiscordButton.Position = UDim2.new(0, 10, 0, 280)
-DiscordButton.Size = UDim2.new(0, 240, 0, 35)
-DiscordButton.Font = Enum.Font.GothamBold
-DiscordButton.Text = "Join Discord Server"
-DiscordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-DiscordButton.TextSize = 14.000
-DiscordButton.ZIndex = 3
-
-UICorner_Discord.CornerRadius = UDim.new(0, 6)
-UICorner_Discord.Parent = DiscordButton
 
 ----------------------------------------------------------------
 -- SYSTEMS & FUNCTIONS
@@ -181,7 +181,7 @@ DiscordButton.MouseButton1Click:Connect(function()
 	DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
 end)
 
--- Generate Script Buttons
+-- Generate Script Buttons with INSTANT AUTO-CLOSE Fix
 for i, scriptInfo in ipairs(ScriptsData) do
 	local Btn = Instance.new("TextButton")
 	local BtnCorner = Instance.new("UICorner")
@@ -202,8 +202,11 @@ for i, scriptInfo in ipairs(ScriptsData) do
 	BtnCorner.Parent = Btn
 	
 	Btn.MouseButton1Click:Connect(function()
-		pcall(scriptInfo.Function)
-		ScreenGui:Destroy()
+		-- task.spawn use kiya taaki script background me load ho aur UI turant destroy ho jaye
+		task.spawn(function()
+			pcall(scriptInfo.Function)
+		end)
+		ScreenGui:Destroy() -- Instantly closes the UI panel
 	end)
 end
 
@@ -227,15 +230,15 @@ MinimizeButton.MouseButton1Click:Connect(function()
 	isMinimized = not isMinimized
 	if isMinimized then
 		Frame.Size = UDim2.new(0, 260, 0, 30)
+		DiscordButton.Visible = false
 		SearchBar.Visible = false
 		ScrollingFrame.Visible = false
-		DiscordButton.Visible = false
 		MinimizeButton.Text = "+"
 	else
 		Frame.Size = UDim2.new(0, 260, 0, 325)
+		DiscordButton.Visible = true
 		SearchBar.Visible = true
 		ScrollingFrame.Visible = true
-		DiscordButton.Visible = true
 		MinimizeButton.Text = "-"
 	end
 end)
