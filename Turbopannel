@@ -165,24 +165,26 @@ end)
 -- SYSTEMS & FUNCTIONS
 ----------------------------------------------------------------
 
--- Smart Discord Auto-Open / Copy Logic
+-- Both Copy & Auto-Open Logic Fixed
 DiscordButton.MouseButton1Click:Connect(function()
 	local discordLink = "https://discord.gg/MB3Sa3XHyX"
 	
-	-- Agar executor browser open karna support karta hai
+	-- 1. Pehle background me clipboard par copy karega
+	if setclipboard then
+		setclipboard(discordLink)
+	elseif toclipboard then
+		toclipboard(discordLink)
+	end
+	
+	-- 2. Saath hi saath browser open karne ki koshish karega
 	if openurl then
 		pcall(function()
 			openurl(discordLink)
 		end)
-		DiscordButton.Text = "Opening App/Browser..."
+		DiscordButton.Text = "Copied & Opening Chrome..."
 		DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105) -- Green Success
 	else
-		-- Fallback: Agar openurl kaam nahi kiya toh direct copy ho jayega
-		if setclipboard then
-			setclipboard(discordLink)
-		elseif toclipboard then
-			toclipboard(discordLink)
-		end
+		-- Agar executor openurl support nahi karta toh sirf copied dikhaega
 		DiscordButton.Text = "Link Copied to Clipboard!"
 		DiscordButton.BackgroundColor3 = Color3.fromRGB(57, 163, 105)
 	end
