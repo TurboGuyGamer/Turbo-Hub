@@ -40,6 +40,12 @@ local ScriptsData = {
 			}
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/newredzv3/Scripts/refs/heads/main/main.luau"))(Settings)
 		end
+    },
+    {
+        Name = "100x Luck🍀",
+        Function = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/TurboGuyGamer/100x-luck./refs/heads/main/Turboluck"))()
+        end
 	}
 }
 
