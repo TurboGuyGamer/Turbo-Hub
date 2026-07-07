@@ -32,6 +32,12 @@ local ScriptsData = {
 		end
 	},
 	{
+		Name = "Admin Command (GAG2)",
+		Function = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/INF-Hub-PL/GrowaGarden2_/refs/heads/main/main_v1.5"))()
+		end
+	},
+	{
 		Name = "Blox Fruit", -- Name updated here
 		Function = function()
 			local Settings = {
@@ -42,7 +48,7 @@ local ScriptsData = {
 		end
     },
     {
-        Name = "100x Luck🍀",
+        Name = "100x Luck🍀(bloxfruit)",
         Function = function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/TurboGuyGamer/100x-luck./refs/heads/main/Turboluck"))()
         end
