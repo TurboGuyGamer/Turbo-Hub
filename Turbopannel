@@ -25,6 +25,12 @@ local ScriptsData = {
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/FN_GAG2_skibidi.lua"))()
 		end
 	},
+    {
+		Name = "The Hunt :20 🎁",
+		Function = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/TurboGuyGamer/The-hunt/refs/heads/main/turbo_hub_premium_v2.lua.txt"))()
+		end
+	},
 	{
 		Name = "Turbo Universal Fling",
 		Function = function()
